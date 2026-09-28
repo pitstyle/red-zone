@@ -1,0 +1,702 @@
+{
+  "title": "RED ZONE",
+  "subtitle": "Gdańsk 2023",
+  "authors": {
+    "photos": "Tamara Wyrzykowska",
+    "poems": "Iryna Ciłyk"
+  },
+  "pageCount": 78,
+  "chapters": [
+    {
+      "id": "01",
+      "label": "01/11",
+      "title": "Walizka ewakuacyjna",
+      "page": 2
+    },
+    {
+      "id": "02",
+      "label": "02/11",
+      "title": "Terra incognita",
+      "page": 8
+    },
+    {
+      "id": "03",
+      "label": "03/11",
+      "title": "Żona Lota",
+      "page": 13
+    },
+    {
+      "id": "04",
+      "label": "04/11",
+      "title": "Czerwona strefa",
+      "page": 21
+    },
+    {
+      "id": "05",
+      "label": "05/11",
+      "title": "Naczynia połączone",
+      "page": 27
+    },
+    {
+      "id": "06",
+      "label": "06/11",
+      "title": "Przed nami długa droga",
+      "page": 34
+    },
+    {
+      "id": "07",
+      "label": "07/11",
+      "title": "Ej, człowieku XXI wieku",
+      "page": 41
+    },
+    {
+      "id": "08",
+      "label": "08/11",
+      "title": "Połówki jabłka",
+      "page": 47
+    },
+    {
+      "id": "09",
+      "label": "09/11",
+      "title": "Bez twarzy",
+      "page": 53
+    },
+    {
+      "id": "10",
+      "label": "10/11",
+      "title": "Przesiedlenka",
+      "page": 60
+    },
+    {
+      "id": "11",
+      "label": "11/11",
+      "title": "Niteczka",
+      "page": 68
+    }
+  ],
+  "pages": [
+    {
+      "index": 0,
+      "page": 1,
+      "src": "./spreads/page-01.webp",
+      "bytes": 519294,
+      "kind": "cover"
+    },
+    {
+      "index": 1,
+      "page": 2,
+      "src": "./spreads/page-02.webp",
+      "bytes": 82502,
+      "chapter": "01",
+      "kind": "chapter-start"
+    },
+    {
+      "index": 2,
+      "page": 3,
+      "src": "./spreads/page-03.webp",
+      "bytes": 584394,
+      "chapter": "01",
+      "kind": "spread"
+    },
+    {
+      "index": 3,
+      "page": 4,
+      "src": "./spreads/page-04.webp",
+      "bytes": 110716,
+      "chapter": "01",
+      "kind": "spread"
+    },
+    {
+      "index": 4,
+      "page": 5,
+      "src": "./spreads/page-05.webp",
+      "bytes": 98562,
+      "chapter": "01",
+      "kind": "spread"
+    },
+    {
+      "index": 5,
+      "page": 6,
+      "src": "./spreads/page-06.webp",
+      "bytes": 111082,
+      "chapter": "01",
+      "kind": "spread"
+    },
+    {
+      "index": 6,
+      "page": 7,
+      "src": "./spreads/page-07.webp",
+      "bytes": 5478,
+      "chapter": "01",
+      "kind": "spread"
+    },
+    {
+      "index": 7,
+      "page": 8,
+      "src": "./spreads/page-08.webp",
+      "bytes": 115884,
+      "chapter": "02",
+      "kind": "chapter-start"
+    },
+    {
+      "index": 8,
+      "page": 9,
+      "src": "./spreads/page-09.webp",
+      "bytes": 35694,
+      "chapter": "02",
+      "kind": "spread"
+    },
+    {
+      "index": 9,
+      "page": 10,
+      "src": "./spreads/page-10.webp",
+      "bytes": 146538,
+      "chapter": "02",
+      "kind": "spread"
+    },
+    {
+      "index": 10,
+      "page": 11,
+      "src": "./spreads/page-11.webp",
+      "bytes": 138564,
+      "chapter": "02",
+      "kind": "spread"
+    },
+    {
+      "index": 11,
+      "page": 12,
+      "src": "./spreads/page-12.webp",
+      "bytes": 155228,
+      "chapter": "02",
+      "kind": "spread"
+    },
+    {
+      "index": 12,
+      "page": 13,
+      "src": "./spreads/page-13.webp",
+      "bytes": 360036,
+      "chapter": "03",
+      "kind": "chapter-start"
+    },
+    {
+      "index": 13,
+      "page": 14,
+      "src": "./spreads/page-14.webp",
+      "bytes": 149230,
+      "chapter": "03",
+      "kind": "spread"
+    },
+    {
+      "index": 14,
+      "page": 15,
+      "src": "./spreads/page-15.webp",
+      "bytes": 5478,
+      "chapter": "03",
+      "kind": "spread"
+    },
+    {
+      "index": 15,
+      "page": 16,
+      "src": "./spreads/page-16.webp",
+      "bytes": 334468,
+      "chapter": "03",
+      "kind": "spread"
+    },
+    {
+      "index": 16,
+      "page": 17,
+      "src": "./spreads/page-17.webp",
+      "bytes": 370586,
+      "chapter": "03",
+      "kind": "spread"
+    },
+    {
+      "index": 17,
+      "page": 18,
+      "src": "./spreads/page-18.webp",
+      "bytes": 182568,
+      "chapter": "03",
+      "kind": "spread"
+    },
+    {
+      "index": 18,
+      "page": 19,
+      "src": "./spreads/page-19.webp",
+      "bytes": 5478,
+      "chapter": "03",
+      "kind": "spread"
+    },
+    {
+      "index": 19,
+      "page": 20,
+      "src": "./spreads/page-20.webp",
+      "bytes": 160204,
+      "chapter": "03",
+      "kind": "spread"
+    },
+    {
+      "index": 20,
+      "page": 21,
+      "src": "./spreads/page-21.webp",
+      "bytes": 583620,
+      "chapter": "04",
+      "kind": "chapter-start"
+    },
+    {
+      "index": 21,
+      "page": 22,
+      "src": "./spreads/page-22.webp",
+      "bytes": 160534,
+      "chapter": "04",
+      "kind": "spread"
+    },
+    {
+      "index": 22,
+      "page": 23,
+      "src": "./spreads/page-23.webp",
+      "bytes": 558092,
+      "chapter": "04",
+      "kind": "spread"
+    },
+    {
+      "index": 23,
+      "page": 24,
+      "src": "./spreads/page-24.webp",
+      "bytes": 128886,
+      "chapter": "04",
+      "kind": "spread"
+    },
+    {
+      "index": 24,
+      "page": 25,
+      "src": "./spreads/page-25.webp",
+      "bytes": 142546,
+      "chapter": "04",
+      "kind": "spread"
+    },
+    {
+      "index": 25,
+      "page": 26,
+      "src": "./spreads/page-26.webp",
+      "bytes": 5478,
+      "chapter": "04",
+      "kind": "spread"
+    },
+    {
+      "index": 26,
+      "page": 27,
+      "src": "./spreads/page-27.webp",
+      "bytes": 202840,
+      "chapter": "05",
+      "kind": "chapter-start"
+    },
+    {
+      "index": 27,
+      "page": 28,
+      "src": "./spreads/page-28.webp",
+      "bytes": 110562,
+      "chapter": "05",
+      "kind": "spread"
+    },
+    {
+      "index": 28,
+      "page": 29,
+      "src": "./spreads/page-29.webp",
+      "bytes": 123944,
+      "chapter": "05",
+      "kind": "spread"
+    },
+    {
+      "index": 29,
+      "page": 30,
+      "src": "./spreads/page-30.webp",
+      "bytes": 149694,
+      "chapter": "05",
+      "kind": "spread"
+    },
+    {
+      "index": 30,
+      "page": 31,
+      "src": "./spreads/page-31.webp",
+      "bytes": 5478,
+      "chapter": "05",
+      "kind": "spread"
+    },
+    {
+      "index": 31,
+      "page": 32,
+      "src": "./spreads/page-32.webp",
+      "bytes": 98290,
+      "chapter": "05",
+      "kind": "spread"
+    },
+    {
+      "index": 32,
+      "page": 33,
+      "src": "./spreads/page-33.webp",
+      "bytes": 5478,
+      "chapter": "05",
+      "kind": "spread"
+    },
+    {
+      "index": 33,
+      "page": 34,
+      "src": "./spreads/page-34.webp",
+      "bytes": 555118,
+      "chapter": "06",
+      "kind": "chapter-start"
+    },
+    {
+      "index": 34,
+      "page": 35,
+      "src": "./spreads/page-35.webp",
+      "bytes": 244522,
+      "chapter": "06",
+      "kind": "spread"
+    },
+    {
+      "index": 35,
+      "page": 36,
+      "src": "./spreads/page-36.webp",
+      "bytes": 163490,
+      "chapter": "06",
+      "kind": "spread"
+    },
+    {
+      "index": 36,
+      "page": 37,
+      "src": "./spreads/page-37.webp",
+      "bytes": 553334,
+      "chapter": "06",
+      "kind": "spread"
+    },
+    {
+      "index": 37,
+      "page": 38,
+      "src": "./spreads/page-38.webp",
+      "bytes": 137766,
+      "chapter": "06",
+      "kind": "spread"
+    },
+    {
+      "index": 38,
+      "page": 39,
+      "src": "./spreads/page-39.webp",
+      "bytes": 5478,
+      "chapter": "06",
+      "kind": "spread"
+    },
+    {
+      "index": 39,
+      "page": 40,
+      "src": "./spreads/page-40.webp",
+      "bytes": 109176,
+      "chapter": "06",
+      "kind": "spread"
+    },
+    {
+      "index": 40,
+      "page": 41,
+      "src": "./spreads/page-41.webp",
+      "bytes": 338858,
+      "chapter": "07",
+      "kind": "chapter-start"
+    },
+    {
+      "index": 41,
+      "page": 42,
+      "src": "./spreads/page-42.webp",
+      "bytes": 148800,
+      "chapter": "07",
+      "kind": "spread"
+    },
+    {
+      "index": 42,
+      "page": 43,
+      "src": "./spreads/page-43.webp",
+      "bytes": 15916,
+      "chapter": "07",
+      "kind": "spread"
+    },
+    {
+      "index": 43,
+      "page": 44,
+      "src": "./spreads/page-44.webp",
+      "bytes": 13686,
+      "chapter": "07",
+      "kind": "spread"
+    },
+    {
+      "index": 44,
+      "page": 45,
+      "src": "./spreads/page-45.webp",
+      "bytes": 127350,
+      "chapter": "07",
+      "kind": "spread"
+    },
+    {
+      "index": 45,
+      "page": 46,
+      "src": "./spreads/page-46.webp",
+      "bytes": 147518,
+      "chapter": "07",
+      "kind": "spread"
+    },
+    {
+      "index": 46,
+      "page": 47,
+      "src": "./spreads/page-47.webp",
+      "bytes": 137862,
+      "chapter": "08",
+      "kind": "chapter-start"
+    },
+    {
+      "index": 47,
+      "page": 48,
+      "src": "./spreads/page-48.webp",
+      "bytes": 147838,
+      "chapter": "08",
+      "kind": "spread"
+    },
+    {
+      "index": 48,
+      "page": 49,
+      "src": "./spreads/page-49.webp",
+      "bytes": 129944,
+      "chapter": "08",
+      "kind": "spread"
+    },
+    {
+      "index": 49,
+      "page": 50,
+      "src": "./spreads/page-50.webp",
+      "bytes": 290172,
+      "chapter": "08",
+      "kind": "spread"
+    },
+    {
+      "index": 50,
+      "page": 51,
+      "src": "./spreads/page-51.webp",
+      "bytes": 306172,
+      "chapter": "08",
+      "kind": "spread"
+    },
+    {
+      "index": 51,
+      "page": 52,
+      "src": "./spreads/page-52.webp",
+      "bytes": 153244,
+      "chapter": "08",
+      "kind": "spread"
+    },
+    {
+      "index": 52,
+      "page": 53,
+      "src": "./spreads/page-53.webp",
+      "bytes": 101502,
+      "chapter": "09",
+      "kind": "chapter-start"
+    },
+    {
+      "index": 53,
+      "page": 54,
+      "src": "./spreads/page-54.webp",
+      "bytes": 142008,
+      "chapter": "09",
+      "kind": "spread"
+    },
+    {
+      "index": 54,
+      "page": 55,
+      "src": "./spreads/page-55.webp",
+      "bytes": 175688,
+      "chapter": "09",
+      "kind": "spread"
+    },
+    {
+      "index": 55,
+      "page": 56,
+      "src": "./spreads/page-56.webp",
+      "bytes": 192620,
+      "chapter": "09",
+      "kind": "spread"
+    },
+    {
+      "index": 56,
+      "page": 57,
+      "src": "./spreads/page-57.webp",
+      "bytes": 213954,
+      "chapter": "09",
+      "kind": "spread"
+    },
+    {
+      "index": 57,
+      "page": 58,
+      "src": "./spreads/page-58.webp",
+      "bytes": 157432,
+      "chapter": "09",
+      "kind": "spread"
+    },
+    {
+      "index": 58,
+      "page": 59,
+      "src": "./spreads/page-59.webp",
+      "bytes": 5478,
+      "chapter": "09",
+      "kind": "spread"
+    },
+    {
+      "index": 59,
+      "page": 60,
+      "src": "./spreads/page-60.webp",
+      "bytes": 109104,
+      "chapter": "10",
+      "kind": "chapter-start"
+    },
+    {
+      "index": 60,
+      "page": 61,
+      "src": "./spreads/page-61.webp",
+      "bytes": 128892,
+      "chapter": "10",
+      "kind": "spread"
+    },
+    {
+      "index": 61,
+      "page": 62,
+      "src": "./spreads/page-62.webp",
+      "bytes": 241092,
+      "chapter": "10",
+      "kind": "spread"
+    },
+    {
+      "index": 62,
+      "page": 63,
+      "src": "./spreads/page-63.webp",
+      "bytes": 104902,
+      "chapter": "10",
+      "kind": "spread"
+    },
+    {
+      "index": 63,
+      "page": 64,
+      "src": "./spreads/page-64.webp",
+      "bytes": 97424,
+      "chapter": "10",
+      "kind": "spread"
+    },
+    {
+      "index": 64,
+      "page": 65,
+      "src": "./spreads/page-65.webp",
+      "bytes": 116372,
+      "chapter": "10",
+      "kind": "spread"
+    },
+    {
+      "index": 65,
+      "page": 66,
+      "src": "./spreads/page-66.webp",
+      "bytes": 5478,
+      "chapter": "10",
+      "kind": "spread"
+    },
+    {
+      "index": 66,
+      "page": 67,
+      "src": "./spreads/page-67.webp",
+      "bytes": 5478,
+      "chapter": "10",
+      "kind": "spread"
+    },
+    {
+      "index": 67,
+      "page": 68,
+      "src": "./spreads/page-68.webp",
+      "bytes": 292940,
+      "chapter": "11",
+      "kind": "chapter-start"
+    },
+    {
+      "index": 68,
+      "page": 69,
+      "src": "./spreads/page-69.webp",
+      "bytes": 193532,
+      "chapter": "11",
+      "kind": "spread"
+    },
+    {
+      "index": 69,
+      "page": 70,
+      "src": "./spreads/page-70.webp",
+      "bytes": 155818,
+      "chapter": "11",
+      "kind": "spread"
+    },
+    {
+      "index": 70,
+      "page": 71,
+      "src": "./spreads/page-71.webp",
+      "bytes": 287746,
+      "chapter": "11",
+      "kind": "spread"
+    },
+    {
+      "index": 71,
+      "page": 72,
+      "src": "./spreads/page-72.webp",
+      "bytes": 147798,
+      "chapter": "11",
+      "kind": "spread"
+    },
+    {
+      "index": 72,
+      "page": 73,
+      "src": "./spreads/page-73.webp",
+      "bytes": 5478,
+      "chapter": "11",
+      "kind": "spread"
+    },
+    {
+      "index": 73,
+      "page": 74,
+      "src": "./spreads/page-74.webp",
+      "bytes": 166224,
+      "chapter": "11",
+      "kind": "spread"
+    },
+    {
+      "index": 74,
+      "page": 75,
+      "src": "./spreads/page-75.webp",
+      "bytes": 169644,
+      "chapter": "11",
+      "kind": "spread"
+    },
+    {
+      "index": 75,
+      "page": 76,
+      "src": "./spreads/page-76.webp",
+      "bytes": 363142,
+      "chapter": "11",
+      "kind": "spread"
+    },
+    {
+      "index": 76,
+      "page": 77,
+      "src": "./spreads/page-77.webp",
+      "bytes": 140838,
+      "chapter": "11",
+      "kind": "credits"
+    },
+    {
+      "index": 77,
+      "page": 78,
+      "src": "./spreads/page-78.webp",
+      "bytes": 5506,
+      "chapter": "11",
+      "kind": "credits"
+    }
+  ]
+}

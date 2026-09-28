@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="RED ZONE — photo book by Tamara Wyrzykowska and poems by Iryna Ciłyk. Gdańsk 2023."
+    />
+    <title>RED ZONE</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header class="topbar" id="topbar">
+        <div class="brand">
+          <span class="brand-red">Red</span>
+          <span class="brand-zone">ZONE</span>
+        </div>
+        <button type="button" class="icon-btn" id="chapters-toggle" aria-label="Chapters">
+          01–11
+        </button>
+      </header>
+
+      <main class="stage" id="stage" aria-label="Book viewer">
+        <div class="spread-wrap" id="spread-wrap">
+          <img
+            class="spread"
+            id="spread"
+            alt="Book spread"
+            draggable="false"
+          />
+        </div>
+      </main>
+
+      <button type="button" class="nav-hit nav-prev" id="prev" aria-label="Previous page"></button>
+      <button type="button" class="nav-hit nav-next" id="next" aria-label="Next page"></button>
+
+      <div class="rotate-cue" id="rotate-cue" hidden>
+        <p>Rotate your phone for the open-book view</p>
+      </div>
+
+      <nav class="chapter-rail" id="chapter-rail" aria-label="Chapters" hidden>
+        <div class="chapter-rail-inner">
+          <p class="chapter-rail-title">Chapters</p>
+          <div class="chapter-list" id="chapter-list"></div>
+          <button type="button" class="close-rail" id="close-rail">Close</button>
+        </div>
+      </nav>
+
+      <footer class="bottombar" id="bottombar">
+        <span id="page-label">1 / 78</span>
+        <span id="chapter-label"></span>
+      </footer>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
