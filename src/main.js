@@ -1,17 +1,17 @@
 const stack = document.getElementById('stack')
+const contactPage = document.getElementById('contact-page')
 const pageLabel = document.getElementById('page-label')
 const chapterLabel = document.getElementById('chapter-label')
 const chaptersToggle = document.getElementById('chapters-toggle')
-const fullscreenBtn = document.getElementById('fullscreen-btn')
 const chapterRail = document.getElementById('chapter-rail')
 const chapterList = document.getElementById('chapter-list')
+const contactNav = document.getElementById('contact-nav')
 const closeRail = document.getElementById('close-rail')
-const installSheet = document.getElementById('install-sheet')
-const installClose = document.getElementById('install-close')
 const app = document.getElementById('app')
 
 let manifest = null
 let currentIndex = 0
+let onContact = false
 let uiTimer = null
 let scrollRaf = 0
 const spreadEls = []
@@ -39,7 +39,9 @@ function resolveSrc(path) {
 }
 
 function updateLabels(index) {
+  onContact = false
   currentIndex = index
+  contactNav.classList.remove('active')
   const page = manifest.pages[index]
   pageLabel.textContent = `${page.page} / ${manifest.pageCount}`
   const chapter = chapterForPage(page.page)
@@ -48,6 +50,17 @@ function updateLabels(index) {
   for (const btn of chapterList.querySelectorAll('.chapter-btn')) {
     btn.classList.toggle('active', chapter && btn.dataset.id === chapter.id)
   }
+}
+
+function setContactActive() {
+  onContact = true
+  pageLabel.textContent = 'Contact'
+  chapterLabel.textContent = 'Tamara Wyrzykowska'
+  history.replaceState(null, '', '#contact')
+  for (const btn of chapterList.querySelectorAll('.chapter-btn')) {
+    btn.classList.remove('active')
+  }
+  contactNav.classList.add('active')
 }
 
 function buildStack() {
@@ -91,15 +104,29 @@ function goToPage(index, behavior = 'smooth') {
   showUiTemporarily()
 }
 
+function goToContact(behavior = 'smooth') {
+  chapterRail.hidden = true
+  contactPage.scrollIntoView({ behavior, block: 'start' })
+  setContactActive()
+  showUiTemporarily()
+}
+
 function syncFromScroll() {
-  const top = window.scrollY + window.innerHeight * 0.2
+  const top = window.scrollY + window.innerHeight * 0.25
+  const contactTop = contactPage.offsetTop
+
+  if (top >= contactTop - 40) {
+    if (!onContact) setContactActive()
+    return
+  }
+
   let active = 0
   for (let i = 0; i < spreadEls.length; i += 1) {
     const el = spreadEls[i]
     if (el.offsetTop <= top) active = i
     else break
   }
-  if (active !== currentIndex) updateLabels(active)
+  if (onContact || active !== currentIndex) updateLabels(active)
 }
 
 function onScroll() {
@@ -108,128 +135,21 @@ function onScroll() {
   scrollRaf = requestAnimationFrame(syncFromScroll)
 }
 
-function parseStartIndex() {
-  const hash = new URLSearchParams(location.hash.replace(/^#/, ''))
+function parseStart() {
+  const hash = location.hash.replace(/^#/, '')
+  if (hash === 'contact') return { type: 'contact' }
+
   const params = new URLSearchParams(location.search)
-  const chapter = params.get('c') || hash.get('c')
+  const hashParams = new URLSearchParams(hash.includes('=') ? hash : '')
+  const chapter = params.get('c') || hashParams.get('c')
   if (chapter) {
     const id = chapter.padStart(2, '0')
     const found = manifest.chapters.find((c) => c.id === id || c.label.startsWith(id))
-    if (found) return found.page - 1
+    if (found) return { type: 'page', index: found.page - 1 }
   }
-  const page = Number(params.get('p') || hash.get('p') || 1)
-  if (Number.isFinite(page) && page >= 1) return page - 1
-  return 0
-}
-
-function isStandalone() {
-  return (
-    window.matchMedia('(display-mode: standalone)').matches ||
-    window.matchMedia('(display-mode: fullscreen)').matches ||
-    window.navigator.standalone === true
-  )
-}
-
-function isIos() {
-  return (
-    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
-  )
-}
-
-function getFullscreenElement() {
-  return document.fullscreenElement || document.webkitFullscreenElement || null
-}
-
-function fullscreenEnabled() {
-  return Boolean(
-    document.fullscreenEnabled ||
-      document.webkitFullscreenEnabled ||
-      document.documentElement.requestFullscreen ||
-      document.documentElement.webkitRequestFullscreen
-  )
-}
-
-async function enterFullscreen() {
-  const target = document.documentElement
-  try {
-    if (target.requestFullscreen) {
-      await target.requestFullscreen({ navigationUI: 'hide' })
-      return Boolean(getFullscreenElement())
-    }
-    if (target.webkitRequestFullscreen) {
-      target.webkitRequestFullscreen()
-      return true
-    }
-    if (app.requestFullscreen) {
-      await app.requestFullscreen({ navigationUI: 'hide' })
-      return Boolean(getFullscreenElement())
-    }
-  } catch {
-    return false
-  }
-  return false
-}
-
-async function exitFullscreen() {
-  try {
-    if (document.exitFullscreen) await document.exitFullscreen()
-    else if (document.webkitExitFullscreen) document.webkitExitFullscreen()
-  } catch {
-    /* ignore */
-  }
-}
-
-/** Nudge document scroll so Safari collapses its chrome (best-effort). */
-function collapseSafariChrome() {
-  const y = window.scrollY
-  window.scrollTo(0, y + 1)
-  requestAnimationFrame(() => {
-    window.scrollTo(0, y + 2)
-  })
-}
-
-function syncFullscreenUi() {
-  const active = Boolean(getFullscreenElement()) || isStandalone()
-  document.documentElement.classList.toggle('is-immersive', active)
-  fullscreenBtn.classList.toggle('is-active', active)
-  fullscreenBtn.textContent = active ? 'Exit full' : 'Full screen'
-  fullscreenBtn.setAttribute('aria-pressed', active ? 'true' : 'false')
-}
-
-async function toggleFullscreen() {
-  showUiTemporarily()
-
-  if (getFullscreenElement()) {
-    await exitFullscreen()
-    syncFullscreenUi()
-    return
-  }
-
-  // Already launched from Home Screen → already full screen
-  if (isStandalone()) {
-    syncFullscreenUi()
-    return
-  }
-
-  // Try real Fullscreen API (Android / desktop / some newer iOS)
-  if (fullscreenEnabled()) {
-    const ok = await enterFullscreen()
-    if (ok && getFullscreenElement()) {
-      syncFullscreenUi()
-      return
-    }
-  }
-
-  // iPhone Safari tab: cannot fully hide chrome — guide Home Screen install.
-  // Also scroll-nudge so the address bar at least shrinks.
-  collapseSafariChrome()
-  if (isIos()) {
-    installSheet.hidden = false
-  } else {
-    installSheet.hidden = false
-  }
-  syncFullscreenUi()
+  const page = Number(params.get('p') || hashParams.get('p') || (hash.startsWith('p=') ? hash.slice(2) : hash.replace(/^p=/, '')) || 1)
+  if (Number.isFinite(page) && page >= 1) return { type: 'page', index: page - 1 }
+  return { type: 'page', index: 0 }
 }
 
 async function init() {
@@ -240,15 +160,15 @@ async function init() {
   }
   buildStack()
   buildChapterRail()
-  syncFullscreenUi()
 
-  if (isStandalone()) {
-    document.documentElement.classList.add('is-immersive')
-  }
-
-  const start = parseStartIndex()
-  updateLabels(start)
-  requestAnimationFrame(() => goToPage(start, 'auto'))
+  const start = parseStart()
+  requestAnimationFrame(() => {
+    if (start.type === 'contact') goToContact('auto')
+    else {
+      updateLabels(start.index)
+      goToPage(start.index, 'auto')
+    }
+  })
   showUiTemporarily()
 }
 
@@ -264,36 +184,23 @@ closeRail.addEventListener('click', () => {
 chapterRail.addEventListener('click', (e) => {
   if (e.target === chapterRail) chapterRail.hidden = true
 })
-fullscreenBtn.addEventListener('click', (e) => {
-  e.stopPropagation()
-  toggleFullscreen()
-})
-installClose.addEventListener('click', () => {
-  installSheet.hidden = true
-  collapseSafariChrome()
-})
-installSheet.addEventListener('click', (e) => {
-  if (e.target === installSheet) installSheet.hidden = true
-})
+contactNav.addEventListener('click', () => goToContact())
 
 window.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
     e.preventDefault()
-    goToPage(currentIndex + 1)
+    if (onContact) return
+    if (currentIndex >= spreadEls.length - 1) goToContact()
+    else goToPage(currentIndex + 1)
   }
   if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
     e.preventDefault()
-    goToPage(currentIndex - 1)
+    if (onContact) goToPage(spreadEls.length - 1)
+    else goToPage(currentIndex - 1)
   }
   if (e.key === 'Escape') {
     chapterRail.hidden = true
-    installSheet.hidden = true
-    if (getFullscreenElement()) exitFullscreen()
   }
-  if (e.key.toLowerCase() === 'f') toggleFullscreen()
 })
-
-document.addEventListener('fullscreenchange', syncFullscreenUi)
-document.addEventListener('webkitfullscreenchange', syncFullscreenUi)
 
 init()

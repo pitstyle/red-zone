@@ -28,9 +28,6 @@
           <span class="brand-zone">ZONE</span>
         </div>
         <div class="topbar-actions">
-          <button type="button" class="icon-btn" id="fullscreen-btn" aria-label="Full screen">
-            Full screen
-          </button>
           <button type="button" class="icon-btn" id="chapters-toggle" aria-label="Chapters">
             01–11
           </button>
@@ -39,32 +36,44 @@
 
       <main class="book" id="book" aria-label="Book">
         <div class="stack" id="stack"></div>
+        <section class="contact-page" id="contact-page" aria-label="Contact">
+          <div class="contact-inner">
+            <p class="contact-mark"><span class="brand-red">Red</span> ZONE</p>
+            <h1 class="contact-name">Tamara Wyrzykowska</h1>
+            <p class="contact-role">Professional photographer</p>
+            <p class="contact-place">Currently based in Poland</p>
+            <div class="contact-rule" aria-hidden="true"></div>
+            <p class="contact-lead">
+              For info, questions, bookings or prints
+            </p>
+            <p class="contact-links">
+              <a href="mailto:tamarawyrzykowska@gmail.com">tamarawyrzykowska@gmail.com</a>
+            </p>
+            <p class="contact-links">
+              <a
+                href="https://www.instagram.com/tamara_wyrzykowska"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Instagram — @tamara_wyrzykowska</a
+              >
+            </p>
+            <p class="contact-colophon">
+              Photos · Tamara Wyrzykowska<br />
+              Poems · Iryna Ciłyk<br />
+              Gdańsk 2023
+            </p>
+          </div>
+        </section>
       </main>
-
-      <div class="install-sheet" id="install-sheet" hidden>
-        <div class="install-sheet-inner" role="dialog" aria-labelledby="install-title">
-          <p class="install-kicker">iPhone</p>
-          <h2 id="install-title">True full screen</h2>
-          <p id="install-body">
-            Safari will not fully hide its bars inside a normal tab. Sites that look
-            “app full screen” on iPhone are opened from the Home Screen.
-          </p>
-          <ol>
-            <li>Tap <strong>Share</strong> <span aria-hidden="true">⎋</span></li>
-            <li>Scroll and tap <strong>Add to Home Screen</strong></li>
-            <li>Open <strong>RED ZONE</strong> from your Home Screen</li>
-          </ol>
-          <p class="install-note">
-            While reading here, scroll down — Safari’s address bar will shrink.
-          </p>
-          <button type="button" class="icon-btn install-close" id="install-close">Got it</button>
-        </div>
-      </div>
 
       <nav class="chapter-rail" id="chapter-rail" aria-label="Chapters" hidden>
         <div class="chapter-rail-inner">
           <p class="chapter-rail-title">Chapters</p>
           <div class="chapter-list" id="chapter-list"></div>
+          <button type="button" class="chapter-btn contact-nav" id="contact-nav">
+            <strong>Contact</strong>
+            <span>Tamara Wyrzykowska</span>
+          </button>
           <button type="button" class="close-rail" id="close-rail">Close</button>
         </div>
       </nav>

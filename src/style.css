@@ -115,8 +115,7 @@ body {
 }
 
 .icon-btn,
-.close-rail,
-.install-close {
+.close-rail {
   appearance: none;
   border: 1px solid rgba(255, 255, 255, 0.28);
   background: rgba(0, 0, 0, 0.45);
@@ -127,10 +126,6 @@ body {
   font-size: 0.75rem;
   letter-spacing: 0.08em;
   cursor: pointer;
-}
-
-#fullscreen-btn.is-active {
-  border-color: var(--red);
 }
 
 .book {
@@ -162,77 +157,102 @@ body {
   scroll-margin-top: 0;
 }
 
-/* Standalone / PWA / real fullscreen — edge to edge */
-html.is-immersive .topbar,
-html.is-immersive .bottombar {
-  /* keep controls, but status bar is gone */
-}
-
-html.is-immersive body {
-  /* fill the screen without Safari chrome */
+/* Contact — black book page after the last spread */
+.contact-page {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
   min-height: 100dvh;
-}
-
-.install-sheet {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
+  background: #000;
+  color: #f2f2f2;
   display: grid;
   place-items: center;
-  padding: 1rem;
-  background: rgba(0, 0, 0, 0.78);
+  padding: calc(var(--bar-h) + var(--safe-top) + 1.5rem)
+    max(1.25rem, var(--safe-right))
+    calc(var(--bar-h) + var(--safe-bottom) + 1.5rem)
+    max(1.25rem, var(--safe-left));
+  scroll-margin-top: 0;
 }
 
-.install-sheet[hidden] {
-  display: none !important;
+.contact-inner {
+  width: min(28rem, 100%);
+  text-align: left;
 }
 
-.install-sheet-inner {
-  width: min(420px, 100%);
-  background: #111;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 14px;
-  padding: 1.1rem 1.15rem 1.2rem;
-}
-
-.install-kicker {
-  margin: 0 0 0.35rem;
-  font-size: 0.7rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--red);
-}
-
-.install-sheet-inner h2 {
-  margin: 0 0 0.55rem;
-  font-size: 1.25rem;
-}
-
-.install-sheet-inner p,
-.install-sheet-inner li {
-  margin: 0;
-  color: #ddd;
+.contact-mark {
+  margin: 0 0 2.5rem;
   font-size: 0.95rem;
+  letter-spacing: 0.12em;
+}
+
+.contact-mark .brand-zone {
+  color: #fff;
+  font-weight: 700;
+}
+
+.contact-name {
+  margin: 0 0 0.65rem;
+  font-size: clamp(1.75rem, 6vw, 2.4rem);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+}
+
+.contact-role {
+  margin: 0 0 0.35rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #cfcfcf;
+}
+
+.contact-place {
+  margin: 0;
+  font-size: 1rem;
+  color: #bdbdbd;
   line-height: 1.45;
 }
 
-.install-sheet-inner ol {
-  margin: 0.75rem 0 0.85rem;
-  padding-left: 1.2rem;
+.contact-rule {
+  width: 3.5rem;
+  height: 1px;
+  background: var(--red);
+  margin: 1.75rem 0 1.35rem;
 }
 
-.install-sheet-inner li + li {
-  margin-top: 0.35rem;
+.contact-lead {
+  margin: 0 0 1.1rem;
+  font-size: 1.05rem;
+  line-height: 1.45;
+  color: #e8e8e8;
 }
 
-.install-note {
-  margin: 0 0 1rem !important;
-  font-size: 0.85rem !important;
-  color: var(--muted) !important;
+.contact-links {
+  margin: 0 0 0.65rem;
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
-.install-close {
-  width: 100%;
+.contact-links a {
+  color: #fff;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.contact-links a:hover,
+.contact-links a:focus-visible {
+  color: var(--red);
+  border-bottom-color: var(--red);
+}
+
+.contact-colophon {
+  margin: 2.75rem 0 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  line-height: 1.7;
+  text-transform: uppercase;
+  color: #8a8a8a;
 }
 
 .chapter-rail {
@@ -282,6 +302,15 @@ html.is-immersive body {
   text-align: center;
 }
 
+.chapter-btn.contact-nav {
+  display: block;
+  width: 100%;
+  margin-top: 0.65rem;
+  text-align: left;
+  padding: 0.85rem 1rem;
+  border-color: rgba(225, 6, 0, 0.45);
+}
+
 .chapter-btn strong {
   display: block;
   font-size: 0.95rem;
@@ -321,11 +350,8 @@ html.is-immersive body {
   .chapter-list {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
-}
 
-/* When browser actually grants fullscreen */
-:fullscreen #app,
-:-webkit-full-screen #app {
-  min-height: 100%;
-  background: #000;
+  .contact-inner {
+    width: min(32rem, 100%);
+  }
 }
