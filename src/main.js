@@ -86,15 +86,7 @@ function setLeaf(el, { mode, src }) {
 
 function renderSpread(page) {
   const src = page.src
-  const book = document.getElementById('book')
-  // Cover: full art on top, matching black page below (same panel size)
-  if (page.kind === 'cover' || page.page === 1) {
-    book.classList.add('is-cover')
-    setLeaf(pageA, { mode: 'is-full', src })
-    setLeaf(pageB, { mode: 'is-blank', src: null })
-    return
-  }
-  book.classList.remove('is-cover')
+  document.getElementById('book').classList.remove('is-cover')
   setLeaf(pageA, { mode: 'is-left', src })
   setLeaf(pageB, { mode: 'is-right', src })
 }
