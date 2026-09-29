@@ -102,8 +102,15 @@ body {
   font-weight: 700;
 }
 
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
 .icon-btn,
-.close-rail {
+.close-rail,
+.install-close {
   appearance: none;
   border: 1px solid rgba(255, 255, 255, 0.28);
   background: rgba(0, 0, 0, 0.45);
@@ -114,6 +121,108 @@ body {
   font-size: 0.75rem;
   letter-spacing: 0.08em;
   cursor: pointer;
+}
+
+#fullscreen-btn.is-active {
+  border-color: var(--red);
+  color: #fff;
+}
+
+.stage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #000;
+}
+
+.spread-wrap {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.spread {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  background: #111;
+  pointer-events: none;
+}
+
+html.is-fullscreen,
+html.is-fullscreen body,
+html.is-fullscreen #app {
+  width: 100%;
+  height: 100%;
+  background: #000;
+}
+
+html.is-fullscreen #app {
+  height: 100%;
+}
+
+.install-sheet {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.72);
+}
+
+.install-sheet[hidden] {
+  display: none !important;
+}
+
+.install-sheet-inner {
+  width: min(420px, 100%);
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 14px;
+  padding: 1.1rem 1.15rem 1.2rem;
+}
+
+.install-kicker {
+  margin: 0 0 0.35rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+
+.install-sheet-inner h2 {
+  margin: 0 0 0.55rem;
+  font-size: 1.25rem;
+}
+
+.install-sheet-inner p,
+.install-sheet-inner li {
+  margin: 0;
+  color: #ddd;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.install-sheet-inner ol {
+  margin: 0.75rem 0 1rem;
+  padding-left: 1.2rem;
+}
+
+.install-sheet-inner li + li {
+  margin-top: 0.35rem;
+}
+
+.install-close {
+  width: 100%;
 }
 
 .stage {

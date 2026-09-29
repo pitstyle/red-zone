@@ -6,10 +6,13 @@ const chapterLabel = document.getElementById('chapter-label')
 const prevBtn = document.getElementById('prev')
 const nextBtn = document.getElementById('next')
 const chaptersToggle = document.getElementById('chapters-toggle')
+const fullscreenBtn = document.getElementById('fullscreen-btn')
 const chapterRail = document.getElementById('chapter-rail')
 const chapterList = document.getElementById('chapter-list')
 const closeRail = document.getElementById('close-rail')
 const rotateCue = document.getElementById('rotate-cue')
+const installSheet = document.getElementById('install-sheet')
+const installClose = document.getElementById('install-close')
 const app = document.getElementById('app')
 
 let manifest = null
@@ -121,7 +124,124 @@ function buildChapterRail() {
 function updateRotateCue() {
   const portrait = window.matchMedia('(orientation: portrait)').matches
   const narrow = window.innerWidth < 900
-  rotateCue.hidden = !(portrait && narrow)
+  const standalone = isStandalone()
+  rotateCue.hidden = !(portrait && narrow && !standalone)
+}
+
+function fitToVisualViewport() {
+  const vv = window.visualViewport
+  const height = vv ? Math.round(vv.height) : window.innerHeight
+  const width = vv ? Math.round(vv.width) : window.innerWidth
+  const top = vv ? Math.round(vv.offsetTop) : 0
+  const left = vv ? Math.round(vv.offsetLeft) : 0
+  app.style.width = `${width}px`
+  app.style.height = `${height}px`
+  app.style.transform = top || left ? `translate(${left}px, ${top}px)` : ''
+  document.documentElement.style.setProperty('--app-h', `${height}px`)
+}
+
+function isStandalone() {
+  return (
+    window.matchMedia('(display-mode: standalone)').matches ||
+    window.matchMedia('(display-mode: fullscreen)').matches ||
+    window.navigator.standalone === true
+  )
+}
+
+function isIos() {
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+}
+
+function getFullscreenElement() {
+  return (
+    document.fullscreenElement ||
+    document.webkitFullscreenElement ||
+    document.msFullscreenElement ||
+    null
+  )
+}
+
+function canRequestFullscreen() {
+  return Boolean(
+    app.requestFullscreen ||
+      app.webkitRequestFullscreen ||
+      app.webkitRequestFullScreen ||
+      document.documentElement.requestFullscreen
+  )
+}
+
+async function enterFullscreen() {
+  const target = app
+  try {
+    if (target.requestFullscreen) {
+      await target.requestFullscreen({ navigationUI: 'hide' })
+      return true
+    }
+    if (target.webkitRequestFullscreen) {
+      target.webkitRequestFullscreen()
+      return true
+    }
+    if (target.webkitRequestFullScreen) {
+      target.webkitRequestFullScreen()
+      return true
+    }
+    if (document.documentElement.requestFullscreen) {
+      await document.documentElement.requestFullscreen({ navigationUI: 'hide' })
+      return true
+    }
+  } catch {
+    return false
+  }
+  return false
+}
+
+async function exitFullscreen() {
+  try {
+    if (document.exitFullscreen) await document.exitFullscreen()
+    else if (document.webkitExitFullscreen) document.webkitExitFullscreen()
+    else if (document.webkitCancelFullScreen) document.webkitCancelFullScreen()
+  } catch {
+    /* ignore */
+  }
+}
+
+function syncFullscreenUi() {
+  const active = Boolean(getFullscreenElement()) || isStandalone()
+  document.documentElement.classList.toggle('is-fullscreen', active)
+  fullscreenBtn.classList.toggle('is-active', active)
+  fullscreenBtn.textContent = active ? 'Exit full' : 'Full screen'
+  fullscreenBtn.setAttribute('aria-pressed', active ? 'true' : 'false')
+  fitToVisualViewport()
+}
+
+async function toggleFullscreen() {
+  showUiTemporarily()
+
+  if (getFullscreenElement()) {
+    await exitFullscreen()
+    syncFullscreenUi()
+    return
+  }
+
+  if (isStandalone()) {
+    syncFullscreenUi()
+    return
+  }
+
+  // iPhone Safari often blocks real fullscreen for web pages.
+  if (isIos() && !document.fullscreenEnabled && !document.webkitFullscreenEnabled) {
+    installSheet.hidden = false
+    return
+  }
+
+  const ok = await enterFullscreen()
+  if (!ok) {
+    // Fallback for iOS / restricted Safari: guide Add to Home Screen
+    installSheet.hidden = false
+    return
+  }
+  syncFullscreenUi()
 }
 
 function distance(a, b) {
@@ -131,6 +251,7 @@ function distance(a, b) {
 }
 
 function onPointerDown(e) {
+  if (!installSheet.hidden) return
   stage.setPointerCapture(e.pointerId)
   pointers.set(e.pointerId, e)
   showUiTemporarily()
@@ -196,14 +317,13 @@ function onPointerMove(e) {
 
 function onPointerUp(e) {
   const wasSwipe = swipeActive && pointers.size === 1 && scale <= 1.05
-  const start = pointers.get(e.pointerId)
   pointers.delete(e.pointerId)
 
   if (pointers.size < 2) {
     pinchStartDist = 0
   }
 
-  if (!wasSwipe || !start) return
+  if (!wasSwipe) return
 
   const dx = e.clientX - swipeStartX
   const dy = e.clientY - swipeStartY
@@ -243,11 +363,17 @@ async function init() {
   buildChapterRail()
   setPage(parseStartIndex())
   updateRotateCue()
+  fitToVisualViewport()
+  syncFullscreenUi()
   showUiTemporarily()
 }
 
 prevBtn.addEventListener('click', () => go(-1))
 nextBtn.addEventListener('click', () => go(1))
+fullscreenBtn.addEventListener('click', (e) => {
+  e.stopPropagation()
+  toggleFullscreen()
+})
 chaptersToggle.addEventListener('click', () => {
   chapterRail.hidden = !chapterRail.hidden
 })
@@ -256,6 +382,12 @@ closeRail.addEventListener('click', () => {
 })
 chapterRail.addEventListener('click', (e) => {
   if (e.target === chapterRail) chapterRail.hidden = true
+})
+installClose.addEventListener('click', () => {
+  installSheet.hidden = true
+})
+installSheet.addEventListener('click', (e) => {
+  if (e.target === installSheet) installSheet.hidden = true
 })
 
 stage.addEventListener('pointerdown', onPointerDown)
@@ -270,10 +402,25 @@ window.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     resetZoom()
     chapterRail.hidden = true
+    installSheet.hidden = true
+    if (getFullscreenElement()) exitFullscreen()
   }
+  if (e.key.toLowerCase() === 'f') toggleFullscreen()
 })
 
-window.addEventListener('orientationchange', updateRotateCue)
-window.addEventListener('resize', updateRotateCue)
+document.addEventListener('fullscreenchange', syncFullscreenUi)
+document.addEventListener('webkitfullscreenchange', syncFullscreenUi)
+window.addEventListener('orientationchange', () => {
+  updateRotateCue()
+  fitToVisualViewport()
+})
+window.addEventListener('resize', () => {
+  updateRotateCue()
+  fitToVisualViewport()
+})
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', fitToVisualViewport)
+  window.visualViewport.addEventListener('scroll', fitToVisualViewport)
+}
 
 init()

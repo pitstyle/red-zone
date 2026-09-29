@@ -7,12 +7,16 @@
       content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5"
     />
     <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="RED ZONE" />
     <meta name="theme-color" content="#000000" />
     <meta
       name="description"
       content="RED ZONE — photo book by Tamara Wyrzykowska and poems by Iryna Ciłyk. Gdańsk 2023."
     />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="./icon-180.png" />
     <title>RED ZONE</title>
     <link rel="stylesheet" href="/src/style.css" />
   </head>
@@ -23,9 +27,14 @@
           <span class="brand-red">Red</span>
           <span class="brand-zone">ZONE</span>
         </div>
-        <button type="button" class="icon-btn" id="chapters-toggle" aria-label="Chapters">
-          01–11
-        </button>
+        <div class="topbar-actions">
+          <button type="button" class="icon-btn" id="fullscreen-btn" aria-label="Full screen">
+            Full screen
+          </button>
+          <button type="button" class="icon-btn" id="chapters-toggle" aria-label="Chapters">
+            01–11
+          </button>
+        </div>
       </header>
 
       <main class="stage" id="stage" aria-label="Book viewer">
@@ -44,6 +53,22 @@
 
       <div class="rotate-cue" id="rotate-cue" hidden>
         <p>Rotate your phone for the open-book view</p>
+      </div>
+
+      <div class="install-sheet" id="install-sheet" hidden>
+        <div class="install-sheet-inner" role="dialog" aria-labelledby="install-title">
+          <p class="install-kicker">iPhone tip</p>
+          <h2 id="install-title">Open full screen</h2>
+          <p>
+            Safari keeps its bar on landscape tabs. For a true full-screen book:
+          </p>
+          <ol>
+            <li>Tap the <strong>Share</strong> button</li>
+            <li>Choose <strong>Add to Home Screen</strong></li>
+            <li>Open <strong>RED ZONE</strong> from your Home Screen</li>
+          </ol>
+          <button type="button" class="icon-btn install-close" id="install-close">Got it</button>
+        </div>
       </div>
 
       <nav class="chapter-rail" id="chapter-rail" aria-label="Chapters" hidden>

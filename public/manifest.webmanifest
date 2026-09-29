@@ -1,0 +1,24 @@
+{
+  "name": "RED ZONE",
+  "short_name": "RED ZONE",
+  "description": "Photo book by Tamara Wyrzykowska and poems by Iryna Ci\u0142yk. Gda\u0144sk 2023.",
+  "start_url": "./",
+  "display": "fullscreen",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-180.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
