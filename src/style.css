@@ -17,29 +17,37 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-html,
-body {
+/*
+  Document-level scroll is required for Safari to collapse its
+  top/bottom chrome. Inner overflow:auto containers do NOT hide bars.
+*/
+html {
   margin: 0;
-  width: 100%;
-  height: 100%;
   background: var(--bg);
   color: var(--fg);
   font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
-  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg);
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
 }
 
 #app {
   position: relative;
   width: 100%;
-  height: 100%;
-  height: 100dvh;
-  overflow: hidden;
+  min-height: 100%;
   background: #000;
 }
 
 .topbar,
 .bottombar {
-  position: absolute;
+  position: fixed;
   left: 0;
   right: 0;
   z-index: 20;
@@ -56,14 +64,14 @@ body {
   top: 0;
   height: calc(var(--bar-h) + var(--safe-top));
   padding-top: var(--safe-top);
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.75), transparent);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent);
 }
 
 .bottombar {
   bottom: 0;
   height: calc(var(--bar-h) + var(--safe-bottom));
   padding-bottom: var(--safe-bottom);
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.75), transparent);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
   font-size: 12px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -125,18 +133,9 @@ body {
   border-color: var(--red);
 }
 
-/* Vertical stack of FULL landscape spreads — edges touch */
-.scroller {
-  position: absolute;
-  inset: 0;
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior-y: contain;
-  scroll-snap-type: y proximity;
-  background: #000;
-  padding-top: calc(var(--bar-h) + var(--safe-top));
-  padding-bottom: calc(var(--bar-h) + var(--safe-bottom));
+.book {
+  width: 100%;
+  padding: 0;
 }
 
 .stack {
@@ -156,27 +155,32 @@ body {
   object-fit: contain;
   object-position: center;
   background: #000;
-  vertical-align: top;
   user-select: none;
   -webkit-user-drag: none;
-  scroll-snap-align: start;
-  /* Touch the next spread — no gutter */
   margin: 0;
   padding: 0;
+  scroll-margin-top: 0;
 }
 
-.spread + .spread {
-  border-top: 0;
+/* Standalone / PWA / real fullscreen — edge to edge */
+html.is-immersive .topbar,
+html.is-immersive .bottombar {
+  /* keep controls, but status bar is gone */
+}
+
+html.is-immersive body {
+  /* fill the screen without Safari chrome */
+  min-height: 100dvh;
 }
 
 .install-sheet {
-  position: absolute;
+  position: fixed;
   inset: 0;
   z-index: 50;
   display: grid;
   place-items: center;
   padding: 1rem;
-  background: rgba(0, 0, 0, 0.72);
+  background: rgba(0, 0, 0, 0.78);
 }
 
 .install-sheet[hidden] {
@@ -213,7 +217,7 @@ body {
 }
 
 .install-sheet-inner ol {
-  margin: 0.75rem 0 1rem;
+  margin: 0.75rem 0 0.85rem;
   padding-left: 1.2rem;
 }
 
@@ -221,12 +225,18 @@ body {
   margin-top: 0.35rem;
 }
 
+.install-note {
+  margin: 0 0 1rem !important;
+  font-size: 0.85rem !important;
+  color: var(--muted) !important;
+}
+
 .install-close {
   width: 100%;
 }
 
 .chapter-rail {
-  position: absolute;
+  position: fixed;
   inset: 0;
   z-index: 40;
   background: rgba(0, 0, 0, 0.55);
@@ -311,4 +321,11 @@ body {
   .chapter-list {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
+}
+
+/* When browser actually grants fullscreen */
+:fullscreen #app,
+:-webkit-full-screen #app {
+  min-height: 100%;
+  background: #000;
 }

@@ -8,7 +8,7 @@
     />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="RED ZONE" />
     <meta name="theme-color" content="#000000" />
     <meta
@@ -37,22 +37,26 @@
         </div>
       </header>
 
-      <main class="scroller" id="scroller" aria-label="Book">
+      <main class="book" id="book" aria-label="Book">
         <div class="stack" id="stack"></div>
       </main>
 
       <div class="install-sheet" id="install-sheet" hidden>
         <div class="install-sheet-inner" role="dialog" aria-labelledby="install-title">
-          <p class="install-kicker">iPhone tip</p>
-          <h2 id="install-title">Open full screen</h2>
-          <p>
-            Safari keeps its bar on landscape tabs. For a true full-screen book:
+          <p class="install-kicker">iPhone</p>
+          <h2 id="install-title">True full screen</h2>
+          <p id="install-body">
+            Safari will not fully hide its bars inside a normal tab. Sites that look
+            “app full screen” on iPhone are opened from the Home Screen.
           </p>
           <ol>
-            <li>Tap the <strong>Share</strong> button</li>
-            <li>Choose <strong>Add to Home Screen</strong></li>
+            <li>Tap <strong>Share</strong> <span aria-hidden="true">⎋</span></li>
+            <li>Scroll and tap <strong>Add to Home Screen</strong></li>
             <li>Open <strong>RED ZONE</strong> from your Home Screen</li>
           </ol>
+          <p class="install-note">
+            While reading here, scroll down — Safari’s address bar will shrink.
+          </p>
           <button type="button" class="icon-btn install-close" id="install-close">Got it</button>
         </div>
       </div>

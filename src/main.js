@@ -1,4 +1,3 @@
-const scroller = document.getElementById('scroller')
 const stack = document.getElementById('stack')
 const pageLabel = document.getElementById('page-label')
 const chapterLabel = document.getElementById('chapter-label')
@@ -93,7 +92,7 @@ function goToPage(index, behavior = 'smooth') {
 }
 
 function syncFromScroll() {
-  const top = scroller.scrollTop + scroller.clientHeight * 0.2
+  const top = window.scrollY + window.innerHeight * 0.2
   let active = 0
   for (let i = 0; i < spreadEls.length; i += 1) {
     const el = spreadEls[i]
@@ -142,15 +141,29 @@ function getFullscreenElement() {
   return document.fullscreenElement || document.webkitFullscreenElement || null
 }
 
+function fullscreenEnabled() {
+  return Boolean(
+    document.fullscreenEnabled ||
+      document.webkitFullscreenEnabled ||
+      document.documentElement.requestFullscreen ||
+      document.documentElement.webkitRequestFullscreen
+  )
+}
+
 async function enterFullscreen() {
+  const target = document.documentElement
   try {
-    if (app.requestFullscreen) {
-      await app.requestFullscreen({ navigationUI: 'hide' })
+    if (target.requestFullscreen) {
+      await target.requestFullscreen({ navigationUI: 'hide' })
+      return Boolean(getFullscreenElement())
+    }
+    if (target.webkitRequestFullscreen) {
+      target.webkitRequestFullscreen()
       return true
     }
-    if (app.webkitRequestFullscreen) {
-      app.webkitRequestFullscreen()
-      return true
+    if (app.requestFullscreen) {
+      await app.requestFullscreen({ navigationUI: 'hide' })
+      return Boolean(getFullscreenElement())
     }
   } catch {
     return false
@@ -167,29 +180,55 @@ async function exitFullscreen() {
   }
 }
 
+/** Nudge document scroll so Safari collapses its chrome (best-effort). */
+function collapseSafariChrome() {
+  const y = window.scrollY
+  window.scrollTo(0, y + 1)
+  requestAnimationFrame(() => {
+    window.scrollTo(0, y + 2)
+  })
+}
+
 function syncFullscreenUi() {
   const active = Boolean(getFullscreenElement()) || isStandalone()
+  document.documentElement.classList.toggle('is-immersive', active)
   fullscreenBtn.classList.toggle('is-active', active)
   fullscreenBtn.textContent = active ? 'Exit full' : 'Full screen'
+  fullscreenBtn.setAttribute('aria-pressed', active ? 'true' : 'false')
 }
 
 async function toggleFullscreen() {
   showUiTemporarily()
+
   if (getFullscreenElement()) {
     await exitFullscreen()
     syncFullscreenUi()
     return
   }
+
+  // Already launched from Home Screen → already full screen
   if (isStandalone()) {
     syncFullscreenUi()
     return
   }
-  if (isIos() && !document.fullscreenEnabled && !document.webkitFullscreenEnabled) {
-    installSheet.hidden = false
-    return
+
+  // Try real Fullscreen API (Android / desktop / some newer iOS)
+  if (fullscreenEnabled()) {
+    const ok = await enterFullscreen()
+    if (ok && getFullscreenElement()) {
+      syncFullscreenUi()
+      return
+    }
   }
-  const ok = await enterFullscreen()
-  if (!ok) installSheet.hidden = false
+
+  // iPhone Safari tab: cannot fully hide chrome — guide Home Screen install.
+  // Also scroll-nudge so the address bar at least shrinks.
+  collapseSafariChrome()
+  if (isIos()) {
+    installSheet.hidden = false
+  } else {
+    installSheet.hidden = false
+  }
   syncFullscreenUi()
 }
 
@@ -201,16 +240,20 @@ async function init() {
   }
   buildStack()
   buildChapterRail()
+  syncFullscreenUi()
+
+  if (isStandalone()) {
+    document.documentElement.classList.add('is-immersive')
+  }
+
   const start = parseStartIndex()
   updateLabels(start)
-  // Wait a frame so images layout, then jump
   requestAnimationFrame(() => goToPage(start, 'auto'))
   showUiTemporarily()
-  syncFullscreenUi()
 }
 
-scroller.addEventListener('scroll', onScroll, { passive: true })
-scroller.addEventListener('pointerdown', showUiTemporarily)
+window.addEventListener('scroll', onScroll, { passive: true })
+window.addEventListener('pointerdown', showUiTemporarily, { passive: true })
 
 chaptersToggle.addEventListener('click', () => {
   chapterRail.hidden = !chapterRail.hidden
@@ -227,6 +270,7 @@ fullscreenBtn.addEventListener('click', (e) => {
 })
 installClose.addEventListener('click', () => {
   installSheet.hidden = true
+  collapseSafariChrome()
 })
 installSheet.addEventListener('click', (e) => {
   if (e.target === installSheet) installSheet.hidden = true

@@ -4,9 +4,10 @@
   "description": "Photo book by Tamara Wyrzykowska and poems by Iryna Ci\u0142yk. Gda\u0144sk 2023.",
   "start_url": "./",
   "display": "fullscreen",
+  "display_override": ["fullscreen", "standalone"],
   "background_color": "#000000",
   "theme_color": "#000000",
-  "orientation": "any",
+  "orientation": "portrait",
   "icons": [
     {
       "src": "./icon-512.png",
