@@ -80,17 +80,21 @@ function setLeaf(el, { mode, src }) {
     el.style.backgroundImage = ''
     return
   }
-  el.style.backgroundImage = `url("${src}")`
+  const absolute = new URL(src, window.location.href).href
+  el.style.backgroundImage = `url("${absolute}")`
 }
 
 function renderSpread(page) {
   const src = page.src
-  // Cover (and similar full-bleed openers): full art on top / left, black companion page
+  const book = document.getElementById('book')
+  // Cover: full art on top, matching black page below (same panel size)
   if (page.kind === 'cover' || page.page === 1) {
+    book.classList.add('is-cover')
     setLeaf(pageA, { mode: 'is-full', src })
     setLeaf(pageB, { mode: 'is-blank', src: null })
     return
   }
+  book.classList.remove('is-cover')
   setLeaf(pageA, { mode: 'is-left', src })
   setLeaf(pageB, { mode: 'is-right', src })
 }

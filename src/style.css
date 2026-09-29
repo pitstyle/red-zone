@@ -218,6 +218,13 @@ body {
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
+/* Cover pair: both panels share the landscape footprint so edges align */
+.book.is-cover .page-face.is-blank {
+  aspect-ratio: var(--spread-ratio);
+  width: min(100%, calc(100cqh * 11 / 8.5));
+  height: min(100%, calc(100cqw * 8.5 / 11));
+}
+
 /* Portrait (default phone): left page on top, right page below — joined at bottom edge of top page */
 @media (orientation: portrait) {
   .book {
