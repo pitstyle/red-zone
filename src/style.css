@@ -19,11 +19,11 @@
 
 /*
   Document-level scroll is required for Safari to collapse its
-  top/bottom chrome. Inner overflow:auto containers do NOT hide bars.
+  chrome into the small floating URL pill (content shows underneath).
 */
 html {
   margin: 0;
-  background: var(--bg);
+  background: #000;
   color: var(--fg);
   font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
 }
@@ -31,20 +31,23 @@ html {
 body {
   margin: 0;
   min-height: 100%;
-  background: var(--bg);
+  min-height: 100dvh;
+  background: #000;
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  overscroll-behavior-y: contain;
+  overscroll-behavior-y: none;
 }
 
 #app {
   position: relative;
   width: 100%;
   min-height: 100%;
+  min-height: 100dvh;
   background: #000;
 }
 
+/* Overlay controls — no solid black bar; content runs under Safari's pill */
 .topbar,
 .bottombar {
   position: fixed;
@@ -58,24 +61,28 @@ body {
   padding-right: max(12px, var(--safe-right));
   pointer-events: none;
   transition: opacity 0.25s ease;
+  background: transparent;
 }
 
 .topbar {
   top: 0;
-  height: calc(var(--bar-h) + var(--safe-top));
-  padding-top: var(--safe-top);
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent);
+  /* Sit below the floating Safari URL pill / status area */
+  padding-top: max(calc(var(--safe-top) + 36px), 52px);
+  height: auto;
+  min-height: 0;
+  padding-bottom: 0.35rem;
 }
 
 .bottombar {
   bottom: 0;
-  height: calc(var(--bar-h) + var(--safe-bottom));
-  padding-bottom: var(--safe-bottom);
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  height: auto;
+  padding-top: 0.35rem;
+  padding-bottom: max(var(--safe-bottom), 10px);
   font-size: 12px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--muted);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
 }
 
 .topbar > *,
@@ -94,6 +101,7 @@ body {
   align-items: baseline;
   gap: 0.35rem;
   line-height: 1;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
 }
 
 .brand-red {
@@ -138,13 +146,14 @@ body {
   flex-direction: column;
   align-items: stretch;
   width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
+  max-width: none;
+  margin: 0;
 }
 
 .spread {
   display: block;
   width: 100%;
+  max-width: 100vw;
   height: auto;
   aspect-ratio: var(--spread-ratio);
   object-fit: contain;
@@ -160,14 +169,14 @@ body {
 /* Contact — black book page after the last spread */
 .contact-page {
   width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
+  max-width: none;
+  margin: 0;
   min-height: 100dvh;
   background: #000;
   color: #f2f2f2;
   display: grid;
   place-items: center;
-  padding: calc(var(--bar-h) + var(--safe-top) + 1.5rem)
+  padding: calc(var(--bar-h) + var(--safe-top) + 2.5rem)
     max(1.25rem, var(--safe-right))
     calc(var(--bar-h) + var(--safe-bottom) + 1.5rem)
     max(1.25rem, var(--safe-left));

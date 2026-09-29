@@ -104,6 +104,17 @@ function goToPage(index, behavior = 'smooth') {
   showUiTemporarily()
 }
 
+/** Ask Safari to shrink chrome into the floating URL pill over the page. */
+function collapseSafariChrome() {
+  const y = Math.max(window.scrollY, 0)
+  // Tiny scroll is enough for iOS Safari to enter compact URL mode
+  window.scrollTo(0, y <= 0 ? 1 : y)
+  requestAnimationFrame(() => {
+    window.scrollTo(0, Math.max(window.scrollY, 1))
+    document.documentElement.classList.remove('js-pending-chrome')
+  })
+}
+
 function goToContact(behavior = 'smooth') {
   chapterRail.hidden = true
   contactPage.scrollIntoView({ behavior, block: 'start' })
@@ -168,12 +179,25 @@ async function init() {
       updateLabels(start.index)
       goToPage(start.index, 'auto')
     }
+    // After layout: nudge scroll so Safari collapses into floating URL pill
+    requestAnimationFrame(() => {
+      collapseSafariChrome()
+      setTimeout(collapseSafariChrome, 250)
+      setTimeout(collapseSafariChrome, 800)
+    })
   })
   showUiTemporarily()
 }
 
 window.addEventListener('scroll', onScroll, { passive: true })
-window.addEventListener('pointerdown', showUiTemporarily, { passive: true })
+window.addEventListener(
+  'pointerdown',
+  () => {
+    showUiTemporarily()
+    collapseSafariChrome()
+  },
+  { passive: true }
+)
 
 chaptersToggle.addEventListener('click', () => {
   chapterRail.hidden = !chapterRail.hidden
