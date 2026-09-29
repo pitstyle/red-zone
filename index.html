@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" class="is-portrait">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -37,22 +37,9 @@
         </div>
       </header>
 
-      <main class="stage" id="stage" aria-label="Book viewer">
-        <div class="book-wrap" id="book-wrap">
-          <div class="book" id="book">
-            <section class="leaf leaf-a" aria-label="Left page">
-              <div class="page-face is-left" id="page-a"></div>
-            </section>
-            <div class="spine" aria-hidden="true"></div>
-            <section class="leaf leaf-b" aria-label="Right page">
-              <div class="page-face is-right" id="page-b"></div>
-            </section>
-          </div>
-        </div>
+      <main class="scroller" id="scroller" aria-label="Book">
+        <div class="stack" id="stack"></div>
       </main>
-
-      <button type="button" class="nav-hit nav-prev" id="prev" aria-label="Previous page"></button>
-      <button type="button" class="nav-hit nav-next" id="next" aria-label="Next page"></button>
 
       <div class="install-sheet" id="install-sheet" hidden>
         <div class="install-sheet-inner" role="dialog" aria-labelledby="install-title">
