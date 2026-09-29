@@ -225,35 +225,6 @@ html.is-fullscreen #app {
   width: 100%;
 }
 
-.stage {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  background: #000;
-}
-
-.spread-wrap {
-  width: 100%;
-  height: 100%;
-  display: grid;
-  place-items: center;
-  transform-origin: center center;
-  will-change: transform;
-}
-
-.spread {
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  display: block;
-  background: #111;
-  pointer-events: none;
-}
-
 .nav-hit {
   position: absolute;
   top: 0;
