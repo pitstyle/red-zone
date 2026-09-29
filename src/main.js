@@ -1,6 +1,7 @@
 const stage = document.getElementById('stage')
-const spreadWrap = document.getElementById('spread-wrap')
-const spread = document.getElementById('spread')
+const bookWrap = document.getElementById('book-wrap')
+const pageA = document.getElementById('page-a')
+const pageB = document.getElementById('page-b')
 const pageLabel = document.getElementById('page-label')
 const chapterLabel = document.getElementById('chapter-label')
 const prevBtn = document.getElementById('prev')
@@ -10,7 +11,6 @@ const fullscreenBtn = document.getElementById('fullscreen-btn')
 const chapterRail = document.getElementById('chapter-rail')
 const chapterList = document.getElementById('chapter-list')
 const closeRail = document.getElementById('close-rail')
-const rotateCue = document.getElementById('rotate-cue')
 const installSheet = document.getElementById('install-sheet')
 const installClose = document.getElementById('install-close')
 const app = document.getElementById('app')
@@ -37,7 +37,7 @@ function clamp(n, min, max) {
 }
 
 function applyTransform() {
-  spreadWrap.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`
+  bookWrap.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`
 }
 
 function resetZoom() {
@@ -73,12 +73,33 @@ function preloadAround(i) {
   }
 }
 
+function setLeaf(el, { mode, src }) {
+  el.classList.remove('is-left', 'is-right', 'is-full', 'is-blank')
+  el.classList.add(mode)
+  if (mode === 'is-blank' || !src) {
+    el.style.backgroundImage = ''
+    return
+  }
+  el.style.backgroundImage = `url("${src}")`
+}
+
+function renderSpread(page) {
+  const src = page.src
+  // Cover (and similar full-bleed openers): full art on top / left, black companion page
+  if (page.kind === 'cover' || page.page === 1) {
+    setLeaf(pageA, { mode: 'is-full', src })
+    setLeaf(pageB, { mode: 'is-blank', src: null })
+    return
+  }
+  setLeaf(pageA, { mode: 'is-left', src })
+  setLeaf(pageB, { mode: 'is-right', src })
+}
+
 function setPage(i, { reset = true } = {}) {
   if (!manifest) return
   index = clamp(i, 0, manifest.pages.length - 1)
   const page = manifest.pages[index]
-  spread.src = page.src
-  spread.alt = `RED ZONE spread ${page.page}`
+  renderSpread(page)
   pageLabel.textContent = `${page.page} / ${manifest.pageCount}`
   const chapter = chapterForPage(page.page)
   chapterLabel.textContent = chapter ? `${chapter.label} · ${chapter.title}` : 'Cover'
@@ -121,13 +142,6 @@ function buildChapterRail() {
   }
 }
 
-function updateRotateCue() {
-  const portrait = window.matchMedia('(orientation: portrait)').matches
-  const narrow = window.innerWidth < 900
-  const standalone = isStandalone()
-  rotateCue.hidden = !(portrait && narrow && !standalone)
-}
-
 function fitToVisualViewport() {
   const vv = window.visualViewport
   const height = vv ? Math.round(vv.height) : window.innerHeight
@@ -137,7 +151,6 @@ function fitToVisualViewport() {
   app.style.width = `${width}px`
   app.style.height = `${height}px`
   app.style.transform = top || left ? `translate(${left}px, ${top}px)` : ''
-  document.documentElement.style.setProperty('--app-h', `${height}px`)
 }
 
 function isStandalone() {
@@ -149,8 +162,14 @@ function isStandalone() {
 }
 
 function isIos() {
-  return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+  return (
+    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+  )
+}
+
+function isPortrait() {
+  return window.matchMedia('(orientation: portrait)').matches
 }
 
 function getFullscreenElement() {
@@ -159,15 +178,6 @@ function getFullscreenElement() {
     document.webkitFullscreenElement ||
     document.msFullscreenElement ||
     null
-  )
-}
-
-function canRequestFullscreen() {
-  return Boolean(
-    app.requestFullscreen ||
-      app.webkitRequestFullscreen ||
-      app.webkitRequestFullScreen ||
-      document.documentElement.requestFullscreen
   )
 }
 
@@ -217,27 +227,21 @@ function syncFullscreenUi() {
 
 async function toggleFullscreen() {
   showUiTemporarily()
-
   if (getFullscreenElement()) {
     await exitFullscreen()
     syncFullscreenUi()
     return
   }
-
   if (isStandalone()) {
     syncFullscreenUi()
     return
   }
-
-  // iPhone Safari often blocks real fullscreen for web pages.
   if (isIos() && !document.fullscreenEnabled && !document.webkitFullscreenEnabled) {
     installSheet.hidden = false
     return
   }
-
   const ok = await enterFullscreen()
   if (!ok) {
-    // Fallback for iOS / restricted Safari: guide Add to Home Screen
     installSheet.hidden = false
     return
   }
@@ -251,7 +255,7 @@ function distance(a, b) {
 }
 
 function onPointerDown(e) {
-  if (!installSheet.hidden) return
+  if (!installSheet.hidden || !chapterRail.hidden) return
   stage.setPointerCapture(e.pointerId)
   pointers.set(e.pointerId, e)
   showUiTemporarily()
@@ -267,7 +271,7 @@ function onPointerDown(e) {
     if (now - lastTap < 280) {
       if (scale > 1.1) resetZoom()
       else {
-        scale = 2.4
+        scale = 2.2
         panX = 0
         panY = 0
         applyTransform()
@@ -307,10 +311,8 @@ function onPointerMove(e) {
   }
 
   if (pointers.size === 1 && scale > 1.05) {
-    const dx = e.clientX - swipeStartX
-    const dy = e.clientY - swipeStartY
-    panX = panStartX + dx
-    panY = panStartY + dy
+    panX = panStartX + (e.clientX - swipeStartX)
+    panY = panStartY + (e.clientY - swipeStartY)
     applyTransform()
   }
 }
@@ -318,16 +320,17 @@ function onPointerMove(e) {
 function onPointerUp(e) {
   const wasSwipe = swipeActive && pointers.size === 1 && scale <= 1.05
   pointers.delete(e.pointerId)
-
-  if (pointers.size < 2) {
-    pinchStartDist = 0
-  }
-
+  if (pointers.size < 2) pinchStartDist = 0
   if (!wasSwipe) return
 
   const dx = e.clientX - swipeStartX
   const dy = e.clientY - swipeStartY
-  if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+  const absX = Math.abs(dx)
+  const absY = Math.abs(dy)
+
+  if (isPortrait()) {
+    if (absY > 48 && absY > absX * 1.15) go(dy < 0 ? 1 : -1)
+  } else if (absX > 48 && absX > absY * 1.15) {
     go(dx < 0 ? 1 : -1)
   }
 }
@@ -362,7 +365,6 @@ async function init() {
   }
   buildChapterRail()
   setPage(parseStartIndex())
-  updateRotateCue()
   fitToVisualViewport()
   syncFullscreenUi()
   showUiTemporarily()
@@ -397,8 +399,8 @@ stage.addEventListener('pointercancel', onPointerUp)
 stage.addEventListener('lostpointercapture', onPointerUp)
 
 window.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowRight' || e.key === ' ') go(1)
-  if (e.key === 'ArrowLeft') go(-1)
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') go(1)
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') go(-1)
   if (e.key === 'Escape') {
     resetZoom()
     chapterRail.hidden = true
@@ -410,14 +412,8 @@ window.addEventListener('keydown', (e) => {
 
 document.addEventListener('fullscreenchange', syncFullscreenUi)
 document.addEventListener('webkitfullscreenchange', syncFullscreenUi)
-window.addEventListener('orientationchange', () => {
-  updateRotateCue()
-  fitToVisualViewport()
-})
-window.addEventListener('resize', () => {
-  updateRotateCue()
-  fitToVisualViewport()
-})
+window.addEventListener('orientationchange', fitToVisualViewport)
+window.addEventListener('resize', fitToVisualViewport)
 if (window.visualViewport) {
   window.visualViewport.addEventListener('resize', fitToVisualViewport)
   window.visualViewport.addEventListener('scroll', fitToVisualViewport)

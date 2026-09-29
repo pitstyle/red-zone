@@ -4,11 +4,15 @@
   --fg: #f2f2f2;
   --muted: #9a9a9a;
   --red: #e10600;
+  --paper: #f7f7f5;
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-left: env(safe-area-inset-left, 0px);
   --safe-right: env(safe-area-inset-right, 0px);
   --bar-h: 44px;
+  /* Half of landscape letter spread: (11/2) x 8.5 → 11:17 */
+  --page-ratio: 11 / 17;
+  --spread-ratio: 11 / 8.5;
 }
 
 * {
@@ -52,7 +56,7 @@ body {
   padding-right: max(12px, var(--safe-right));
   height: calc(var(--bar-h) + var(--safe-top));
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0.72), transparent);
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  transition: opacity 0.25s ease;
   pointer-events: none;
 }
 
@@ -135,9 +139,11 @@ body {
   place-items: center;
   overflow: hidden;
   background: #000;
+  padding: max(8px, var(--safe-top)) max(8px, var(--safe-right))
+    max(8px, var(--safe-bottom)) max(8px, var(--safe-left));
 }
 
-.spread-wrap {
+.book-wrap {
   width: 100%;
   height: 100%;
   display: grid;
@@ -146,27 +152,154 @@ body {
   will-change: transform;
 }
 
-.spread {
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  display: block;
-  background: #111;
-  pointer-events: none;
-}
-
-html.is-fullscreen,
-html.is-fullscreen body,
-html.is-fullscreen #app {
+.book {
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
   background: #000;
 }
 
-html.is-fullscreen #app {
-  height: 100%;
+.leaf {
+  flex: 1 1 0;
+  min-height: 0;
+  min-width: 0;
+  display: grid;
+  place-items: center;
+  container-type: size;
+  background: #000;
+  padding: 0.35rem;
+}
+
+.spine {
+  flex: 0 0 2px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(255, 255, 255, 0.18),
+    transparent
+  );
+}
+
+.page-face {
+  aspect-ratio: var(--page-ratio);
+  width: min(100%, calc(100cqh * 11 / 17));
+  height: min(100%, calc(100cqw * 17 / 11));
+  max-width: 100%;
+  max-height: 100%;
+  background-color: var(--paper);
+  background-repeat: no-repeat;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.page-face.is-left {
+  background-size: 200% 100%;
+  background-position: left center;
+}
+
+.page-face.is-right {
+  background-size: 200% 100%;
+  background-position: right center;
+}
+
+.page-face.is-full {
+  aspect-ratio: var(--spread-ratio);
+  width: min(100%, calc(100cqh * 11 / 8.5));
+  height: min(100%, calc(100cqw * 8.5 / 11));
+  background-size: contain;
+  background-position: center;
+  background-color: #000;
+}
+
+.page-face.is-blank {
+  background-image: none !important;
+  background-color: #000;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+/* Portrait (default phone): left page on top, right page below — joined at bottom edge of top page */
+@media (orientation: portrait) {
+  .book {
+    flex-direction: column;
+  }
+
+  .spine {
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+  }
+
+  .nav-hit {
+    width: 100%;
+    max-width: none;
+    height: 18%;
+    max-height: 120px;
+  }
+
+  .nav-prev {
+    top: 0;
+    bottom: auto;
+    left: 0;
+    right: 0;
+  }
+
+  .nav-next {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+}
+
+/* Landscape: classic open book, left | right */
+@media (orientation: landscape) {
+  .book {
+    flex-direction: row;
+  }
+
+  .spine {
+    flex-basis: 2px;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+  }
+
+  .nav-hit {
+    width: 18%;
+    max-width: 120px;
+    height: 100%;
+    max-height: none;
+  }
+
+  .nav-prev {
+    left: 0;
+    right: auto;
+    top: 0;
+    bottom: 0;
+  }
+
+  .nav-next {
+    right: 0;
+    left: auto;
+    top: 0;
+    bottom: 0;
+  }
+}
+
+.nav-hit {
+  position: absolute;
+  border: 0;
+  background: transparent;
+  z-index: 10;
+  cursor: pointer;
+  padding: 0;
 }
 
 .install-sheet {
@@ -225,53 +358,6 @@ html.is-fullscreen #app {
   width: 100%;
 }
 
-.nav-hit {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 22%;
-  max-width: 140px;
-  border: 0;
-  background: transparent;
-  z-index: 10;
-  cursor: pointer;
-  padding: 0;
-}
-
-.nav-prev {
-  left: 0;
-}
-
-.nav-next {
-  right: 0;
-}
-
-.rotate-cue {
-  position: absolute;
-  left: 50%;
-  bottom: calc(64px + var(--safe-bottom));
-  transform: translateX(-50%);
-  z-index: 25;
-  background: rgba(0, 0, 0, 0.78);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 10px;
-  padding: 0.65rem 0.9rem;
-  max-width: min(88vw, 280px);
-  text-align: center;
-  pointer-events: none;
-}
-
-.rotate-cue[hidden] {
-  display: none !important;
-}
-
-.rotate-cue p {
-  margin: 0;
-  font-size: 0.85rem;
-  line-height: 1.35;
-  color: #ddd;
-}
-
 .chapter-rail {
   position: absolute;
   inset: 0;
@@ -303,7 +389,7 @@ html.is-fullscreen #app {
 
 .chapter-list {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.5rem;
 }
 
@@ -344,10 +430,6 @@ html.is-fullscreen #app {
 }
 
 @media (orientation: landscape) {
-  .rotate-cue {
-    display: none !important;
-  }
-
   .chapter-list {
     grid-template-columns: repeat(6, minmax(0, 1fr));
   }
@@ -364,4 +446,16 @@ html.is-fullscreen #app {
     border-radius: 14px;
     max-height: 80vh;
   }
+
+  .chapter-list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+html.is-fullscreen,
+html.is-fullscreen body,
+html.is-fullscreen #app {
+  width: 100%;
+  height: 100%;
+  background: #000;
 }
