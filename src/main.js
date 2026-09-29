@@ -155,6 +155,7 @@ function fitToVisualViewport() {
   app.style.width = `${width}px`
   app.style.height = `${height}px`
   app.style.transform = top || left ? `translate(${left}px, ${top}px)` : ''
+  updateLayoutMode()
 }
 
 function isStandalone() {
@@ -173,7 +174,13 @@ function isIos() {
 }
 
 function isPortrait() {
-  return window.matchMedia('(orientation: portrait)').matches
+  return window.innerWidth < window.innerHeight
+}
+
+function updateLayoutMode() {
+  const portrait = isPortrait()
+  document.documentElement.classList.toggle('is-portrait', portrait)
+  document.documentElement.classList.toggle('is-landscape', !portrait)
 }
 
 function getFullscreenElement() {

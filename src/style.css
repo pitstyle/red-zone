@@ -225,79 +225,79 @@ body {
   height: min(100%, calc(100cqw * 8.5 / 11));
 }
 
-/* Portrait (default phone): left page on top, right page below — joined at bottom edge of top page */
-@media (orientation: portrait) {
-  .book {
-    flex-direction: column;
-  }
-
-  .spine {
-    background: linear-gradient(
-      to right,
-      transparent,
-      rgba(255, 255, 255, 0.2),
-      transparent
-    );
-  }
-
-  .nav-hit {
-    width: 100%;
-    max-width: none;
-    height: 18%;
-    max-height: 120px;
-  }
-
-  .nav-prev {
-    top: 0;
-    bottom: auto;
-    left: 0;
-    right: 0;
-  }
-
-  .nav-next {
-    top: auto;
-    bottom: 0;
-    left: 0;
-    right: 0;
-  }
+/* Portrait phone: left page on top, right page below — joined at bottom edge of top page */
+html.is-portrait .book {
+  flex-direction: column;
 }
 
-/* Landscape: classic open book, left | right */
-@media (orientation: landscape) {
-  .book {
-    flex-direction: row;
-  }
+html.is-portrait .spine {
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+}
 
-  .spine {
-    flex-basis: 2px;
-    background: linear-gradient(
-      to bottom,
-      transparent,
-      rgba(255, 255, 255, 0.2),
-      transparent
-    );
-  }
+html.is-portrait .nav-hit {
+  width: 100%;
+  max-width: none;
+  height: 18%;
+  max-height: 120px;
+}
 
-  .nav-hit {
-    width: 18%;
-    max-width: 120px;
-    height: 100%;
-    max-height: none;
-  }
+html.is-portrait .nav-prev {
+  top: 0;
+  bottom: auto;
+  left: 0;
+  right: 0;
+}
 
-  .nav-prev {
-    left: 0;
-    right: auto;
-    top: 0;
-    bottom: 0;
-  }
+html.is-portrait .nav-next {
+  top: auto;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
 
-  .nav-next {
-    right: 0;
-    left: auto;
-    top: 0;
-    bottom: 0;
-  }
+/* Landscape / wide: classic open book, left | right */
+html.is-landscape .book {
+  flex-direction: row;
+}
+
+html.is-landscape .spine {
+  flex-basis: 2px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+}
+
+html.is-landscape .nav-hit {
+  width: 18%;
+  max-width: 120px;
+  height: 100%;
+  max-height: none;
+}
+
+html.is-landscape .nav-prev {
+  left: 0;
+  right: auto;
+  top: 0;
+  bottom: 0;
+}
+
+html.is-landscape .nav-next {
+  right: 0;
+  left: auto;
+  top: 0;
+  bottom: 0;
+}
+
+html.is-landscape .chapter-list {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
 }
 
 .nav-hit {
@@ -434,12 +434,6 @@ body {
 .close-rail {
   margin-top: 0.9rem;
   width: 100%;
-}
-
-@media (orientation: landscape) {
-  .chapter-list {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
 }
 
 @media (min-width: 900px) {
